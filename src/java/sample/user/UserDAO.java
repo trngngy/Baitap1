@@ -19,6 +19,8 @@ public class UserDAO {
 
     private static final String LOGIN = "SELECT * FROM tblUser WHERE username = ? AND password = ?";
     private static final String INSERT = "INSERT INTO tblUser(username, password, fullname, roleid, phone, email) VALUES (?,?,?,?,?,?)";
+    private static final String CHECK_DUPLICATE = "SELECT username FROM tblUser WHERE username = ?";
+    private static final String UPDATE_PASSWORD = "UPDATE tblUser SET password = ? WHERE username = ?";
 
     public UserDTO checkLogin(String username, String password) throws SQLException {
         UserDTO user = null;
@@ -81,5 +83,32 @@ public class UserDAO {
             }
         }
         return checkInsert;
+    }
+
+    public boolean checkDuplicate(String username) throws SQLException, ClassNotFoundException {
+        boolean isDuplicate = false;
+        try (Connection conn = DBUtils.getConnection();
+                PreparedStatement ptm = conn.prepareStatement(CHECK_DUPLICATE)) {
+
+            ptm.setString(1, username);
+            try (ResultSet rs = ptm.executeQuery()) {
+                if (rs.next()) {
+                    isDuplicate = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e; 
+        }
+        return isDuplicate;
+    }
+      public void updatePassword(String username, String newPassword) throws SQLException, ClassNotFoundException {
+        try (Connection conn = DBUtils.getConnection();
+             PreparedStatement ptm = conn.prepareStatement(UPDATE_PASSWORD)) {
+             
+            ptm.setString(1, newPassword);
+            ptm.setString(2, username);
+            ptm.executeUpdate(); 
+        }
     }
 }

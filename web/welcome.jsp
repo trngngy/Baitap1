@@ -4,6 +4,7 @@
     Author     : Luu Minh Quan
 --%>
 
+<%@page import="sample.user.UserDTO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,6 +13,16 @@
         <title>Welcome Page</title>
     </head>
     <body>
-        <h1>Hello mấy cưng</h1>
+        <%
+            UserDTO loginUser = (UserDTO) session.getAttribute("LOGIN_USER");
+            if (loginUser == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+        %>
+        <h1><%= loginUser.getFullname()%></h1>
+        <form action="LogoutController" method="POST">
+            <input type="submit" value="Logout" >
+        </form>
     </body>
 </html>

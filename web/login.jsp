@@ -1,9 +1,3 @@
-<%-- 
-    Document   : login
-    Created on : May 10, 2024, 2:10:46 PM
-    Author     : nguye
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,7 +7,7 @@
         <style>
             body {
                 font-family: Arial, sans-serif;
-                background: linear-gradient(to right, #e9ecef, #f8f9fa);
+                background-color: #e9ecef;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -24,14 +18,13 @@
                 background-color: white;
                 padding: 30px;
                 border-radius: 10px;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
                 width: 350px;
                 text-align: center;
             }
             h2 {
                 margin-bottom: 20px;
                 color: #333;
-                font-size: 24px;
             }
             input[type="text"], input[type="password"] {
                 width: 100%;
@@ -41,11 +34,10 @@
                 border-radius: 8px;
                 font-size: 16px;
                 box-sizing: border-box;
-                transition: border-color 0.3s, box-shadow 0.3s;
+                transition: border-color 0.3s;
             }
             input[type="text"]:focus, input[type="password"]:focus {
                 border-color: #4CAF50;
-                box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
                 outline: none;
             }
             input[type="submit"], input[type="button"] {
@@ -56,26 +48,27 @@
                 border-radius: 8px;
                 font-size: 16px;
                 cursor: pointer;
-                transition: background-color 0.3s, transform 0.2s;
+                transition: background-color 0.3s;
             }
             input[type="submit"] {
                 background-color: #4CAF50;
                 color: white;
             }
-            input[type="button"] {
-                background-color: #007bff;
+            input[type="reset"] {
+                background-color: #f44336;
                 color: white;
             }
             input[type="submit"]:hover {
                 background-color: #45a049;
-                transform: translateY(-1px);
             }
-            input[type="button"]:hover {
-                background-color: #0056b3;
-                transform: translateY(-1px);
+            input[type="reset"]:hover {
+                background-color: #d7322f;
             }
             h3 {
                 color: red;
+            }
+            .success-message {
+                color: green;
             }
             label {
                 text-align: left;
@@ -89,13 +82,32 @@
     </head>
     <body>
         <form action="LoginController" method="post">
-            <h2>Login</h2>
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username" required/><br/>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" required/><br/>
+            <h2>Đăng Nhập</h2>
+            <label for="username">Tên đăng nhập</label>
+            <input type="text" id="username" name="username" required/><br/>
+            <label for="password">Mật khẩu</label>
+            <input type="password" id="password" name="password" required/><br/>
             <input type="submit" value="Login"/>
-            <input type="button" value="Register" onclick="window.location.href = 'register.jsp'"/>
+            <input type="button" value="Register" onclick="window.location.href='register.jsp'"/>
+            <input type="button" value="Forgot Password" onclick="window.location.href='forgot-password.jsp'"/>
+
+            <%
+                String error = (String) request.getAttribute("ERROR");
+                if (error != null && !error.isEmpty()) {
+            %>
+                <h3><%= error %></h3>
+            <%
+                }
+            %>
+
+            <%
+                String successMessage = (String) request.getAttribute("SUCCESS");
+                if (successMessage != null && !successMessage.isEmpty()) {
+            %>
+                <p class="success-message"><%= successMessage %></p>
+            <%
+                }
+            %>
         </form>
     </body>
 </html>
