@@ -1,19 +1,19 @@
 <%-- 
-    Document   : welcome
-    Created on : May 10, 2024, 8:19:30 AM
-    Author     : Luu Minh Quan
+    Document   : updateCategory
+    Created on : Nov 26, 2024, 10:35:26 AM
+    Author     : nguye
 --%>
 
 <%@page import="java.util.List"%>
-<%@page import="sample.category.CategoryDAO"%>
 <%@page import="sample.category.CategoryDTO"%>
 <%@page import="sample.user.UserDTO"%>
+<%@page import="sample.category.CategoryDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Welcome Page</title>
+        <title>Update Page</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -61,23 +61,19 @@
                 return;
             }
         %>
-        <h1><%= loginUser.getFullname()%></h1>
-        <form action="LogoutController" method="POST">
-            <input type="submit" value="Logout" >
-        </form>
-        <div>
-            <%
-                CategoryDAO dao = new CategoryDAO();
-                List<CategoryDTO> categoryList = null;
-                categoryList = dao.getAllCategory();
-            %>
-        </div>
+        <%
+            CategoryDAO dao = new CategoryDAO();
+            List<CategoryDTO> categoryList = null;
+            categoryList = dao.getAllCategory();
+            
+        %>
+        <h2>Manage Appointments</h2>
         <table>
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Category Name</th>
-                    <th>Category Images</th>
+                    <th>Images</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -86,28 +82,27 @@
                     if (categoryList != null) {
                         for (CategoryDTO category : categoryList) {
                 %>
+            <form action="UpdateCategoryController" method="POST">
                 <tr>
-                    <td><%= category.getCategoryID()%></td>
-                    <td><%= category.getCategoryName()%></td>
-                    <td><%= category.getCategoryImages()%></td>
-                    <td><%= category.getStatus()%></td>
-                    <td>
-                        <a href="updateCategory.jsp">Update</a>
-                        <a href="DeleteCategoryController?id=<%= category.getCategoryID()%>">Delete</a>
-                    </td>
+                    <td><input type="text" name="id" value="<%= category.getCategoryID()%>" readonly=""</td>
+                    <td><input type="text" name="name" value="<%= category.getCategoryName()%>"</td>
+                    <td><input type="text" name="images" value="<%= category.getCategoryImages()%>"</td>
+                    <td><input type="text" name="status" value="<%= category.getStatus()%>"</td>
+                    <td><button type="submit" value="Update">Update</button></td>
                 </tr>
-                <%
-                    }
-                } else {
-                %>
-                <tr>
-                    <td colspan="6">No category found.</td>
-                </tr>
-                <%
-                    }
-                %>
-            </tbody>
-        </table>
-        <a href="createCategory.jsp">Create New Category</a>
+            </form>
+            <%
+                }
+            } else {
+            %>
+            <tr>
+                <td colspan="6">No appointments found.</td>
+            </tr>
+            <%
+                }
+            %>
+        </tbody>
+    </table>
+        <a href="welcome.jsp">Back to Dashboard</a>
     </body>
 </html>
